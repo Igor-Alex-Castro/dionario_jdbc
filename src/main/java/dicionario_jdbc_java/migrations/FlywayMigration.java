@@ -25,7 +25,10 @@ public class FlywayMigration
                 .locations("classpath:db/migrations")
                 .load();
    
+        
         flyway.migrate();
+       //flyway.repair();
+        
     }
 	
 }

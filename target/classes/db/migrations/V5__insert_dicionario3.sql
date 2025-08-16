@@ -1,0 +1,1 @@
+insert into dicionario ( nome) values ('java' );

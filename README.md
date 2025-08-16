@@ -32,3 +32,5 @@ classDiagram
     Palavra "1" *-- "1" Origem
     Palavra "1" *-- "0..*" Frase
 ```
+
+t

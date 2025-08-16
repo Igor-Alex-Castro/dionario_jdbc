@@ -1,12 +1,9 @@
 package dicionario_jdbc_java;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
-import dicionario_jdbc_java.daoRpository.DaoDicionarioRository;
+
 import dicionario_jdbc_java.migrations.FlywayMigration;
+import dicionario_jdbc_java.ui.Menu;
 
 /**
  * Hello world!
@@ -14,19 +11,16 @@ import dicionario_jdbc_java.migrations.FlywayMigration;
  */
 public class App 
 {
-	private static Connection connection;
+	
+	private final static Menu menu = new Menu();
 	
 	public static void main( String[] args ) throws ClassNotFoundException
-    {
+    	{
+		
+		
+		 menu.menuOption();
+		
     	
-    	
-    	DaoDicionarioRository daoDicionarioRository = new DaoDicionarioRository();
-    	
-    	daoDicionarioRository.clienteReturn();
-    	System.out.println(System.getProperty("java.version"));
-        System.out.println(System.getProperty("java.runtime.version"));
-        System.out.println(System.getProperty("java.vm.version"));
-    	
-    	 FlywayMigration.runMigrations();
-    }
+	    FlywayMigration.runMigrations();
+    	}
 }

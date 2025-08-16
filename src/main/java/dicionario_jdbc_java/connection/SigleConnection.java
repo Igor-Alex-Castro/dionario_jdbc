@@ -7,7 +7,7 @@ public class SigleConnection {
 
 	
 	private static String url = 
-			"jdbc:oracle:thin:@localhost:1521:XE";
+			"jdbc:oracle:thin:@localhost:1521/XEPDB1";
 	
 	private static Connection connection = null;
 	
@@ -28,7 +28,7 @@ public class SigleConnection {
 			if(connection == null) {
 				//Class.forName()
 				Class.forName("oracle.jdbc.driver.OracleDriver");
-				connection = DriverManager.getConnection(url,"system", "admin123");
+				connection = DriverManager.getConnection(url,"DICIONARIO", "admin123");
 				connection.setAutoCommit(false);//para nao efetuar alteracoes no banco sem o nosso comando
 				
 			}
