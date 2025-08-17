@@ -95,7 +95,7 @@ Fiz um resumo explicando o motivo de ter tomado determinadas decisões para cons
 [Guia Oracle XEPDB1 Flyway](Guia_Oracle_XEPDB1_Flyway.pdf)
 
 ### Criar o usúario Dicionaro.
-Para usar o flyway com Oracle  é preciso criar apartir do sys com perfil sysbda com service XEPDB1 e dar sua devidas permições.
+Para usar o flyway com Oracle é preciso criar um usuario apartir do sys com perfil sysbda com service XEPDB1 e dar sua devidas permições.
 
 #### **Diferença entre SID e Service Name**
 
