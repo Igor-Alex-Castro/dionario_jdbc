@@ -91,10 +91,25 @@ Para conectar o Flyway ao banco Oracle, enfrentei sérios problemas, desde quest
 
 Fiz um resumo explicando o motivo de ter tomado determinadas decisões para conseguir dar andamento ao projeto.
 
+
 [Guia Oracle XEPDB1 Flyway](Guia_Oracle_XEPDB1_Flyway.pdf)
 
 ### Criar o usúario Dicionaro.
 Para usar o flyway com Oracle  é preciso criar apartir do sys com perfil sysbda com service XEPDB1 e dar sua devidas permições.
+
+#### **Diferença entre SID e Service Name**
+
+**SID (XE)**
+-É a instância raiz do banco Oracle.
+- Representa o Container Database (CDB).
+- Usuários comuns do dia a dia não existem nesse nível, apenas contas administrativas como SYS e SYSTEM.
+- Se você cria um usuário normal (CREATE USER DICIONARIO...) dentro de uma PDB, ele não é visível no nível do CDB.
+
+**Service Name (XEPDB1)**
+- É o pluggable database onde você realmente cria e usa seus usuários/aplicações.
+- O XEPDB1 é um serviço registrado no listener, e aponta para o PDB.
+- Qualquer usuário que você criar (como DICIONARIO) só existe dentro desse PDB.
+- Por isso, se você tentar logar no XE com o DICIONARIO, o Oracle responde: usuário não existe.
 ```
 CREATE USER dicionario IDENTIFIED BY dicionario
 DEFAULT TABLESPACE users
