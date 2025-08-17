@@ -94,44 +94,89 @@ Fiz um resumo explicando o motivo de ter tomado determinadas decisões para cons
 
 [Guia Oracle XEPDB1 Flyway](Guia_Oracle_XEPDB1_Flyway.pdf)
 
-### Criar o usúario Dicionaro.
-Para usar o flyway com Oracle é preciso criar um usuario apartir do sys com perfil sysbda com service XEPDB1 e dar sua devidas permições.
+## 👤 Criando o usuário `DICIONARIO`
 
-#### **Diferença entre SID e Service Name**
+Para usar o **Flyway** com **Oracle**, é necessário criar um usuário a partir do **SYS** (perfil `SYSDBA`) conectado ao **service XEPDB1**, e conceder suas devidas permissões.
 
-**SID (XE)**
--É a instância raiz do banco Oracle.
-- Representa o Container Database (CDB).
-- Usuários comuns do dia a dia não existem nesse nível, apenas contas administrativas como SYS e SYSTEM.
-- Se você cria um usuário normal (CREATE USER DICIONARIO...) dentro de uma PDB, ele não é visível no nível do CDB.
+---
 
-**Service Name (XEPDB1)**
-- É o pluggable database onde você realmente cria e usa seus usuários/aplicações.
-- O XEPDB1 é um serviço registrado no listener, e aponta para o PDB.
-- Qualquer usuário que você criar (como DICIONARIO) só existe dentro desse PDB.
-- Por isso, se você tentar logar no XE com o DICIONARIO, o Oracle responde: usuário não existe.
-```
-CREATE USER dicionario IDENTIFIED BY dicionario
+### 🔑 Diferença entre **SID** e **Service Name**
+
+- **SID (XE)**  
+  - 🗂️ Representa a **instância raiz** do Oracle.  
+  - 📦 Corresponde ao **Container Database (CDB)**.  
+  - 👨‍💻 Apenas usuários administrativos existem nesse nível (como `SYS` e `SYSTEM`).  
+  - 🚫 Usuários comuns não podem ser criados aqui.  
+
+- **Service Name (XEPDB1)**  
+  - 📌 É um **Pluggable Database (PDB)**.  
+  - 👥 É onde os **usuários e aplicações** realmente são criados e utilizados.  
+  - ✅ Usuários criados (como `DICIONARIO`) só existem dentro desse **PDB**.  
+  - ⚠️ Se você tentar logar no `XE` com o usuário `DICIONARIO`, receberá o erro:  
+    > *usuário não existe*  
+
+---
+
+### 📜 Script de criação do usuário
+
+```sql
+CREATE USER dicionario IDENTIFIED BY admin123
 DEFAULT TABLESPACE users
 TEMPORARY TABLESPACE temp
 QUOTA UNLIMITED ON users;
 
--- Conceder permissões básicas
+-- 📌 Permissões básicas
 GRANT CREATE SESSION TO dicionario;
 GRANT CREATE TABLE TO dicionario;
 GRANT CREATE SEQUENCE TO dicionario;
 GRANT CREATE VIEW TO dicionario;
 
--- Se precisar criar procedures, funções e triggers
+-- ⚙️ Caso precise criar procedures, funções e triggers
 GRANT CREATE PROCEDURE TO dicionario;
 GRANT CREATE TRIGGER TO dicionario;
 
--- Se precisar manipular outros objetos
+-- 🔗 Caso precise manipular outros objetos
 GRANT CREATE SYNONYM TO dicionario;
 
--- Se quiser facilitar durante o desenvolvimento (não recomendado em produção)
+-- 🚧 Facilitar no desenvolvimento (não recomendado em produção)
 GRANT RESOURCE TO dicionario;
+````
+
+## 🛫 Flyway
+
+Para usar o **Flyway** corretamente com o Oracle, é necessário prestar atenção na configuração abaixo:
+
+---
+
+### 📦 Classe de configuração (exemplo em Java)
+
+Arquivo: `dicionario.jdbc.java.migrations`
+
+```java
+Class.forName("oracle.jdbc.driver.OracleDriver");
+
+Flyway flyway = Flyway.configure()
+        .dataSource("jdbc:oracle:thin:@localhost:1521/XEPDB1", "DICIONARIO", "admin123")
+        .locations("classpath:db/migrations")
+        .load();
+
+flyway.migrate();                .locations("classpath:db/migrations")
+                .load();
+   
+        
+        flyway.migrate();
 ```
+- Se o código funcionar corretamente, mantenha como está.
+- Caso ocorra erro de versionamento:
+- Localize o script de versionamento em src/main/resources/db/migrations.
+- Exclua o arquivo SQL que deu errado.
+- Utilize flyway.repair() no lugar de flyway.migrate().
+- Esse comando ajusta o histórico de migrations (flyway_schema_history).
+- Após rodar o projeto, corrija o script SQL do último versionamento.
+- Execute novamente flyway.migrate() (no lugar do flyway.repair()).
+- Se tudo der certo, mantenha usando flyway.migrate().
+- Se der errado novamente, repita o processo até corrigir.
+
 ## 🛠️ Tecnologias
 
 - Linguagem: Java
