@@ -69,6 +69,37 @@ public class DaoPalavraRository {
 
 	}
 
+	
+	public Palavra verPalavraPorId(Long idPalavra) throws SQLException {
+		
+		
+	
+		String sql = "SELECT * FROM DICIONARIO.PALAVRA WHERE ID = ?";
+
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+		
+		preparedStatement.setLong(1, idPalavra);
+	
+	
+		
+		ResultSet resultSet = preparedStatement.executeQuery();
+
+		
+			Palavra palavra = new Palavra();
+			
+			palavra.setId(resultSet.getLong("id"));
+			palavra.setNome(resultSet.getString("nome"));
+			
+			
+		
+		
+
+		
+
+		return palavra;
+
+	}
 
 	
 }

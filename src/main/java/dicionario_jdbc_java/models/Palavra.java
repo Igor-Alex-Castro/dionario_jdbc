@@ -1,5 +1,6 @@
 package dicionario_jdbc_java.models;
 
+import java.util.List;
 
 public class Palavra {
 
@@ -9,11 +10,14 @@ public class Palavra {
 
 		private String nome;
 
-	
-		private Dicionario dicionario;
-		
-		
+
 		private Origem origem;
+		
+		private List<Significado> significados;
+
+		private List<Frase> frases;
+		
+		
 
 		public Long getId() {
 			return id;
@@ -31,15 +35,6 @@ public class Palavra {
 			this.nome = nome;
 		}
 
-	
-		
-		public Dicionario getDicionario() {
-			return dicionario;
-		}
-
-		public void setDicionario(Dicionario dicionario) {
-			this.dicionario = dicionario;
-		}
 
 		public Origem getOrigem() {
 			return origem;
@@ -49,7 +44,21 @@ public class Palavra {
 			this.origem = origem;
 		}
 
-		
+		public List<Significado> getSignificados() {
+			return significados;
+		}
+
+		public void setSignificados(List<Significado> significados) {
+			this.significados = significados;
+		}
+
+		public List<Frase> getFrases() {
+			return frases;
+		}
+
+		public void setFrases(List<Frase> frases) {
+			this.frases = frases;
+		}
 
 		
 }
